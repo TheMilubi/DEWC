@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jugando con Cadenas</title>
+    <script>
+        function longitud(){
+            var cadena = document.getElementById("cadena").value;
+            document.getElementById("salida").innerHTML = "La longitud de la cadena es " + cadena.length;
+        }
+        function mayusculas(){
+            var cadena = document.getElementById("cadena").value;
+            document.getElementById("cadena").value = cadena.toUpperCase();
+        }
+        function invertir(){
+            var letras = document.getElementById("cadena").value.split("");
+            letras.reverse();
+            document.getElementById("cadena").value = letras.join("");
+            console.log(letras);
+        }
+    </script>
+</head>
+<body>
+    <h1>Probando con cadenas JavaScript</h1>
+    <p>
+        Inserte una cadena <input type="text" name="cadena" id="cadena"/>
+        <button onclick="longitud(),mayusculas(),invertir()">Longitud de cadena</button><br>
+        <div id="salida"></div>
+        
+    </p>
+    
+</body>
+</html>
