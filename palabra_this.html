@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Palabra this</title>
+    <script>
+        function cambia (algo) 
+        {
+            document.getElementById("texto").value = algo;
+        };
+        onload = function () 
+        {
+            document.getElementById("texto").onfocus = function () 
+            {
+                alert(this);
+            }
+        };
+    </script>
+</head>
+<body>
+    <input type="text" name="texto" id="texto">
+    <button onclick="cambia(this.innerHTML)">Púlsame</button>
+    
+</body>
+</html>
