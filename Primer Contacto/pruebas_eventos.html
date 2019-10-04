@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function validar() 
+        {
+            var siono = false;
+           /*  alert("Estoy en validar");
+            siono = document.getElementById("campo1").value != "" && document.getElementById("campo2").value != "";
+            if (!siono) 
+            {
+                alert("Algún campo está vacío");
+            } */
+
+            return siono
+        }
+    </script>
+</head>
+<body>
+    <form action="procesar.php" method="GET" onsubmit="validar()">
+        <input type="text" name="campo1" id="campo1">
+        <input type="date" name="campo2" id="campo2">
+        <input type="submit" value="Submit">
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista 1 - Ejercicio 1</title>
+    <script>
+        function tablaMultiplicar(n)
+        {
+            var salida = "";
+            for(var i = 1; i <= 10; i ++)
+            {
+                salida += n + " x " + i + " = " + (n*i) + "<br/>";
+            }
+            return salida;
+        }
+        /* var numero;
+        numero = parseInt(prompt("Inserte un número...", 0));
+        console.log(numero);
+        document.write(tablaMultiplicar(numero)); */
+        onload = function () 
+        {
+            document.getElementsByTagName("button")[0].onclick = function (){
+                var n = document.getElementById("numero").value;
+                document.getElementById("tabla").innerHTML = tablaMultiplicar(n);
+            }
+            document.getElementsByTagName("button")[1].onclick = function (){
+                document.getElementById("tabla").innerHTML = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Tabla de multiplicar</h1>
+    <label for="numero">Número: </label>
+    <input type="number" name="" id="numero">
+    <button>Generar tabla</button>
+    <button>Limpiar</button>
+    <div id="tabla"></div>
+</body>
+</html>
