@@ -1,0 +1,47 @@
+<!-- 4. Definir una función que muestre información sobre una cadena de texto que se le
+pasa como argumento. A partir de la cadena que se le pasa, la función determina si
+esa cadena está formada sólo por mayúsculas, sólo por minúsculas o por una
+mezcla de ambas. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista 1 - Ejercicio 4</title>
+    <script>
+        onload = function()
+        {
+            document.getElementById("comprobar").onclick = function()
+            {
+                var c = comprobar(document.getElementById("texto").value)
+                switch(c)
+                {
+                    case 1: document.getElementById("output").innerHTML = "Está compuesta sólo por mayúsculas";break;
+                    case 2: document.getElementById("output").innerHTML = "Está compuesta sólo por minúsculas";break;
+                    case 3: document.getElementById("output").innerHTML = "Está compuesta por ambas";break;
+                    default: document.getElementById("output").innerHTML = "No tiene letras";
+                }
+            }
+        }
+        //Devuelve 1 = mayusculas, 2 = minusculas, 3 = ambos, y 0 = no se compone de ninguna
+        function comprobar(cadena)
+        {
+            var r, indexMayus, indexMinus;
+            mayus = (/[A-Z]/).test(cadena) ? 1 : 0;
+            console.log(mayus);
+            minus = (/[a-z]/).test(cadena) ? 2 : 0;
+            console.log(minus);
+            r = mayus + minus;
+            return r;
+        }
+    </script>
+</head>
+<body>
+    <h1>Información de la cadena</h1>
+    <label for="texto">Texto: </label>
+    <input type="text" name="texto" id="texto">
+    <button id="comprobar">Comprobar</button>
+    <div id="output"></div>
+</body>
+</html>

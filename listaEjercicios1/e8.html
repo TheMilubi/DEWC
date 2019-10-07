@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista 1 - Ejercicio 8</title>
+    <script>
+        
+        onload = function()
+        {
+            var letrasPosibles = "T R W A G M Y F P D X B N J Z S Q V H L C K E";
+            var array = letrasPosibles.split(" ");
+            array.sort();
+            for (var i = 0; i < array.length; i ++)
+            {
+                document.getElementById("letra").innerHTML += `<option>${array[i]}</option>`;
+            }
+            document.getElementById("comprobar").onclick = function()
+            {   
+                var numero = document.getElementById("dni").value;
+                var letra = document.getElementById("letra").value;
+                var esCorrecto = comprobar(numero,letra);
+                if(esCorrecto)
+                {
+                    document.getElementById("output").innerHTML = "Letra correcta"
+                }
+                else
+                {
+                    document.getElementById("output").innerHTML = "Letra incorrecta"
+                }
+                
+            };
+        };
+        function comprobar(numero, letra){
+            var letrasPosibles = "T R W A G M Y F P D X B N J Z S Q V H L C K E";
+            var array = letrasPosibles.split(" ");
+            return letra == array[numero%23];
+        }
+    </script>
+</head>
+<body>
+    <!-- 8. El cálculo de la letra del NIF es un proceso matemático sencillo que se basa en
+    obtener el resto de la división entera del número de DNI y el número 23. A partir
+    del resto de la división, se obtiene la letra seleccionándola según el siguiente orden:
+    T R W A G M Y F P D X B N J Z S Q V H L C K E
+    Por tanto si el resto de la división es 0, la letra del DNI es la T y si el resto es 3 la
+    letra es la A. Elaborar un pequeño script que solicite en un campo de texto el DNI
+    de un individuo y en otro la letra del mismo y compruebe si los datos son correctos
+    o no. -->
+    <h1>Comprobación de la letra del NIF</h1>
+    <label for="dni">Número de DNI: </label>
+    <input type="text" name="dni" id="dni">
+    <select name="letra" id="letra"></select>
+    <button id="comprobar">Comprobar</button>
+    <div id="output"></div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calculadora</title>
+    <script>
+        onload = function()
+        {
+            document.getElementById("convertirBinario").onclick = function()
+            {
+                document.getElementById("output").innerHTML = Number(document.getElementById("decimal").value).toString(2);
+            }
+            document.getElementById("convertirOctal").onclick = function()
+            {
+                document.getElementById("output").innerHTML = Number(document.getElementById("decimal").value).toString(8);
+            }
+            document.getElementById("convertirHex").onclick = function()
+            {
+                document.getElementById("output").innerHTML = Number(document.getElementById("decimal").value).toString(16);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Converttir número decimal a binario, octal o hexadecimal</h1>
+    <label for="decimal">Decimal: </label>
+    <input type="text" name="decimal" id="decimal">
+    <button id="convertirBinario">Convierte a binario</button>
+    <button id="convertirOctal">Convierte a octal</button>
+    <button id="convertirHex">Convierte a hexadecimal</button>
+    <div id="output"></div>
+</body>
+</html>
