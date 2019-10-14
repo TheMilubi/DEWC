@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pruebas con arrays</title>
+    <script>
+        onload = function () {
+            document.getElementById('muestra').onclick = function () {
+                var deportes = Array.from(document.getElementById('deportes').children);
+                var elegidos = [];
+                console.log(deportes);
+                deportes.forEach( function(option) {
+                    if(option.selected){
+                        elegidos.push(option.value);
+                    }
+                });
+                console.log(elegidos);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Deportes preferidos</h1>
+    <select name="deportes" id="deportes" multiple>
+        <option value="Baloncesto">Baloncesto</option>
+        <option value="Futbol">Fútbol</option>
+        <option value="Balonmano">Balonmano</option>
+        <option value="Voley">Voley</option>
+    </select>
+    <button id="muestra">Mostrar</button>
+</body>
+
+</html>

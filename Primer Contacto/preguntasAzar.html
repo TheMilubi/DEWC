@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Preguntas al azar</title>
+    <script>
+        var preguntas = [
+            {
+                pregunta: "¿Con que comando añadimos elementos a una tabla en SQL?",
+                respuestas: ["SELECT", "INSERT", "DELETE", "UPDATE"],
+                correcta: 1
+            },
+            {
+                pregunta: "¿Con que comando actualizamos los elementos de una tabla en SQL?",
+                respuestas: ["SELECT", "INSERT", "DELETE", "UPDATE"],
+                correcta: 3
+            },
+            {
+                pregunta: "¿Con que comando vemos los elementos a una tabla en SQL?",
+                respuestas: ["SELECT", "INSERT", "DELETE", "UPDATE"],
+                correcta: 0
+            }
+        ]
+        window.onload = function () {
+            var test = "";
+            preguntas.forEach(function (pregunta, indice) {
+                test += `<p>${indice + 1}. ${pregunta.pregunta}<p>`;
+                pregunta.respuestas.forEach(function (respuesta, indiceR) {
+                    test += `<input type="radio" name="${indice}" value="${indiceR}">${respuesta}<br>`
+                })
+            })
+            document.getElementById('contenido').innerHTML = test;
+            document.getElementById('corregir').onclick = function () {
+                console.log('corregir');
+                var aciertos = 0;
+                var fallos = 0;
+                var inputs = Array.from(document.getElementsByTagName('input'));
+                console.log(inputs);
+                inputs.forEach(function (input, indice) {
+                    if (input.checked) {
+                        if (preguntas[input.name].correcta == input.value) {
+                            aciertos++;
+                        }
+                        else if (preguntas[input.name].correcta != input.value) {
+                            fallos++;
+                        }
+                    }
+                })
+                console.log(`Aciertos: ${aciertos}\nFallos: ${fallos}`);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Mini-test</h1>
+    <div id="contenido"></div>
+    <button id="corregir">Corregir</button>
+</body>
+
+</html>

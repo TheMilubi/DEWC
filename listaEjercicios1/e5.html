@@ -7,13 +7,26 @@ las palabras que contiene. Posteriormente, mostrar la siguiente información:
  Las palabras ordenadas de la z a la a  -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Lista 1 - Ejercicio 5</title>
+    <script>
+        var cadena = prompt("Escribe aquí el texto: ");
+        cadena = cadena.replace(/[.:,;¿?¡!]/gi, '');
+        var array = cadena.split(' ');
+        document.write(`Número de palabras: ${array.length}<br>`);
+        document.write(`Primera palabra: ${array[0]}<br>Última palabra: ${array[array.length - 1]}<br>`);
+        document.write(`Palabras en orden inverso: ${array.reverse().join(' ')}<br>`);
+        document.write(`Palabras ordenadas de la 'a' a la 'z': ${array.sort().join(' ')}<br>`);
+        document.write(`Palabras ordenadas de la 'z' a la 'a': ${array.sort().reverse().join(' ')}`);
+    </script>
 </head>
+
 <body>
-    
+
 </body>
+
 </html>

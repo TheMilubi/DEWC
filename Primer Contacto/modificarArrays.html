@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pop, push, shift, unshift</title>
+    <script>
+        onload = function () {
+            var miArray = {
+                arr: []
+            };
+            miArray.actuar = function () {
+                var string = document.getElementById('valor').value;
+                console.log(string);
+                if (/\+.+/.test(string)) {
+                    miArray.arr.unshift(/[a-zA-Z ]+/.exec(string)[0]);
+                }
+                else if (/shift/i.test(string)) {
+                    miArray.arr.shift(/[a-zA-Z ]+/.exec(string)[0]);
+                }
+                else if (/.+\+/.test(string)) {
+                    miArray.arr.push(/[a-zA-Z ]+/.exec(string)[0]);
+                }
+                else if (/pop/i.test(string)) {
+                    miArray.arr.pop(/[a-zA-Z ]+/.exec(string)[0]);
+                }
+                console.log(miArray.arr);
+            }
+            document.getElementById('actuar').onclick = miArray.actuar;
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <h1>Modificando arrays</h1>
+    <label for="valor">Valor: </label>
+    <input type="text" id="valor">
+    <button id="actuar">Actuar</button>
+
+
+</body>
+
+</html>
