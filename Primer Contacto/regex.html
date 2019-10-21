@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pruebas de JS a boli</title>
+    
+    <script>
+        var expReg = /casa/gi;
+        texto = "La casa de la pradera, la casa de la playa";
+        console.log(expReg.test(texto));
+        console.log(texto.replace(expReg,"chabola"));
+        console.log(texto.match(expReg));
+        console.log(texto.search(expReg));
+        console.log(expReg.exec(texto));
+        
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

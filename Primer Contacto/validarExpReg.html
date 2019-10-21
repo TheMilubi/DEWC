@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Validar Expresiones Regulares</title>
+    <script>
+        onload = () => {
+            document.querySelector('#valida').onclick = () => {
+                try {
+                    var texto = document.querySelector('#texto').value;
+                    var er = document.querySelector('#er').value;
+                    er = new RegExp(er);
+                    if (er.test(texto)) {
+                        document.querySelector('#salida').innerHTML = `Sí cumple`;
+                    }
+                    else {
+                        document.querySelector('#salida').innerHTML = `No cumple`;
+                    }
+                }
+                catch(er){
+                    console.log(er.message);
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <label for="er">Expresión regular: </label>
+        <input type="text" name="er" id="er"><br><br>
+        <label for="texto">Texto a comprobar:</label>
+        <input type="text" name="texto" id="texto"><br><br>
+        <button id="valida">Validar</button>
+        <p id="salida"></p>
+    </div>
+</body>
+
+</html>

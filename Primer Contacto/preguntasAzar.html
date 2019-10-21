@@ -26,30 +26,29 @@
         ]
         window.onload = function () {
             var test = "";
-            preguntas.forEach(function (pregunta, indice) {
+            copia = preguntas.slice();
+            copia.sort(function (a, b) { return 0.5 - Math.random() }); //Sort random de preguntas.
+            copia.forEach((pregunta, indice) => {
                 test += `<p>${indice + 1}. ${pregunta.pregunta}<p>`;
-                pregunta.respuestas.forEach(function (respuesta, indiceR) {
-                    test += `<input type="radio" name="${indice}" value="${indiceR}">${respuesta}<br>`
+                pregunta.respuestas.forEach( (respuesta, indiceR) => {
+                    test += `<input type="radio" name="${preguntas.indexOf(pregunta)}" value="${indiceR}">${respuesta}<br>`
                 })
             })
             document.getElementById('contenido').innerHTML = test;
-            document.getElementById('corregir').onclick = function () {
+            document.getElementById('corregir').onclick = () => {
                 console.log('corregir');
-                var aciertos = 0;
-                var fallos = 0;
-                var inputs = Array.from(document.getElementsByTagName('input'));
-                console.log(inputs);
-                inputs.forEach(function (input, indice) {
-                    if (input.checked) {
-                        if (preguntas[input.name].correcta == input.value) {
-                            aciertos++;
-                        }
-                        else if (preguntas[input.name].correcta != input.value) {
-                            fallos++;
-                        }
+                let aciertos = 0;
+                let fallos = 0;
+                for (let i = 0; i < preguntas.length; i++) {
+                    let radio = document.getElementsByName(`${i}`);
+                    if (radio[preguntas[i].correcta].checked) {
+                        aciertos++;
                     }
-                })
-                console.log(`Aciertos: ${aciertos}\nFallos: ${fallos}`);
+                    else {
+                        fallos++;
+                    }
+                }
+                alert(`Aciertos: ${aciertos}\nFallos: ${fallos}`);
             }
         }
     </script>
