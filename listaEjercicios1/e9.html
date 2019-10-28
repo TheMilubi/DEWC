@@ -1,0 +1,36 @@
+<!-- 9. Definir una función que determine si la cadena de texto que se le pasa como
+parámetro es un palíndromo, es decir, si se lee de la misma forma desde la
+izquierda y desde la derecha. Ejemplo de palíndromo complejo: "La ruta nos aporto
+otro paso natural". -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista 1 - Ejercicio 9</title>
+    <script>
+        onload = () => {
+            document.querySelector('#valida').onclick = () => {
+                var texto = document.querySelector('#texto').value;
+                texto = texto.replace(/ /g, "").toLowerCase();
+                var textoinv = texto.split("").reverse().join("");
+                //console.log(textoinv);
+                if (texto == textoinv){
+                    document.querySelector('#salida').innerHTML = "Es un palíndromo";
+                    console.log("Es un palindromo");
+                }
+                else{
+                    document.querySelector('#salida').innerHTML = "No es un palíndromo";
+                    console.log("No es un palindromo");
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="text" name="texto" id="texto">
+    <button id="valida">Comprueba palíndromo</button>
+    <p id="salida"></p>
+</body>
+</html>

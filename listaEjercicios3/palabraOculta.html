@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es ">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Palabra Oculta</title>
+    <script src="diccionario.js"></script>
+    <script>
+        var palabraOculta = {
+            palabras: [
+                'Lazo',
+                'Perro',
+                'Zorro',
+                'Gato',
+                'Elefante',
+                'Mandril',
+                'Leon'
+            ],
+            palabraActual: "",
+            aciertos: 0,
+            numPalabras: 0,
+            mostrarPalabra: function () {
+                let i = Math.floor(Math.random() * this.palabras.length);
+                this.palabraActual = this.palabras[i].toLocaleLowerCase();
+                document.querySelector('#palabraOculta').innerHTML = this.palabraActual.split('').sort(()=>{return 0.5 - Math.random()}).join('');
+            },
+            comprobar: function () {
+                if (document.querySelector('#palabra').value == this.palabraActual) {
+                    this.aciertos++;
+                }
+            },
+            siguientePalabra: function () {
+                this.numPalabras++;
+                this.comprobar();
+                this.mostrarPalabra();
+            },
+            puntuacion: function () {
+                return 10 * this.aciertos / this.numPalabras;
+            },
+            reset: function(){
+                this.aciertos = 0;
+                this.numPalabras = 0;
+                this.palabraActual = "";
+            },
+            empezar: function(){
+                this.numPalabras = 1;
+                document.querySelector('#salida').innerHTML = ``;
+                this.mostrarPalabra();
+            },
+            finalizar: function() {
+                this.comprobar();
+                document.querySelector('#salida').innerHTML = `Tu puntuacion es: ${this.puntuacion()}`;
+                this.reset();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Acierta la palabra desordenada</h1>
+    <form action="#" method="post" onsubmit="return false;">
+        <p>Palabra desordenada: <span id="palabraOculta"></span></p>
+        <p>Tu respuesta: <input type="text" name="palabra" id="palabra"></p>
+        <button onclick="palabraOculta.empezar()">Empezar juego</button>
+        <button onclick="palabraOculta.siguientePalabra()">Siguiente palabra</button>
+        <button onclick="palabraOculta.finalizar()">Terminar</button>
+    </form>
+    <p id="salida"></p>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulario Genérico</title>
+    <script>
+        var validar = function () {
+            let enviar = true;
+            let texto = document.querySelector('#texto').value;
+            salida = "";
+            if (texto == "") {
+                salida += "<br>Campo de texto vacío"
+                enviar = false
+            }
+            try {
+                document.querySelector('input[name=radio]:checked').value;
+            } catch (er) {
+                salida += "<br>Ningún radiobutton seleccionado"
+            }
+            document.querySelector('#salida').innerHTML = salida;
+            return enviar;
+        }
+        onload = () => {
+            document.querySelector('#activa').onchange = () => {
+                document.querySelector('input[type=submit]').disabled = !document.querySelector('#activa').checked
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Formulario</h1>
+    <form method="post" action="#" onsubmit="validar()">
+        <p>Campo de texto <input type="text" name="texto" id="texto"></p>
+        <p>Checkbox <input type="checkbox" name="activa" id="activa"></p>
+        <p>Botones de radio
+            <input type="radio" name="radio" value="r0">
+            <input type="radio" name="radio" value="r1">
+            <input type="radio" name="radio" value="r2">
+        </p>
+        <input type="submit" value="Submit" disabled>
+    </form>
+    <p style="color:red" id="salida"></p>
+</body>
+
+</html>
