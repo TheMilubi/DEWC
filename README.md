@@ -1,2 +1,2 @@
-# DEWC
+# DWEC
 JavaScript
