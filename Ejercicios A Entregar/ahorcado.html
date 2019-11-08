@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ahorcado</title>
+    <script>
+        var ahorcado = {
+            palabras: [
+                'Lazo',
+                'Perro',
+                'Zorro',
+                'Gato',
+                'Elefante',
+                'Mandril',
+                'Leon',
+                'Capital de España'
+            ],
+            palabra: "",
+            intentos: 6,
+            fallos: 0,
+            letrasErradas: [],
+            letrasPalabra: [],
+
+            ///////////////////////////////////////////////////////////
+            // Seleciona una palabra de la lista de forma aleatoria
+            ///////////////////////////////////////////////////////////
+
+            elegirPalabraRandom: function () {
+                let random = Math.floor(Math.random() * this.palabras.length);
+                let palabra = this.palabras[random];
+                ahorcado.palabra = palabra.toUpperCase();
+                let l = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+                let letters = l.split('');
+                ahorcado.letrasPalabra = [];
+                letters.forEach(letter => {
+                    if (ahorcado.palabra.indexOf(letter) >= 0) ahorcado.letrasPalabra.push(letter);
+                })
+                //console.log("Hola");
+            },
+
+            ///////////////////////////////////////////////////////////
+            // Crea la vista de botones sin letras
+            ///////////////////////////////////////////////////////////
+
+            crearDashes: function () {
+                document.querySelector('#ahorcado').innerHTML = "";
+                let arr = this.palabra.split('');
+                arr.forEach(letra => {
+                    if (letra == " ") document.querySelector('#ahorcado').innerHTML += `<button style="width:auto;visibility:hidden">_</button>`;
+                    else document.querySelector('#ahorcado').innerHTML += `<button style="width:auto;">_</button>`;
+                });
+            },
+
+            crearLetras: function () {
+                let letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+                let arr = letras.split('');
+                document.querySelector('#letras').innerHTML = "";
+                arr.forEach(letra => {
+                    document.querySelector('#letras').innerHTML += `<button id="${letra}" style="width:auto;" enabled>${letra}</button>`;
+                });
+                let botonesLetras = document.querySelectorAll('#letras button');
+                botonesLetras.forEach(boton => {
+                    boton.onclick = function () {
+                        ahorcado.comprobarMostrarLetra(this);
+                    }
+                })
+
+            },
+
+            ////////////////////////////////////////////////////////////////////////
+            // Comprueba que la si la letra pulsada pertenece a la palabra: 
+            // - Si no pertenece se añade a letras erradas (si no estaba ya).
+            // - Si pertenece a la palabra y no se ha mostrado antes, se muestra
+            ////////////////////////////////////////////////////////////////////////
+
+            comprobarMostrarLetra: function (boton) {
+                let letra = boton.innerHTML;
+                // console.log(letra);
+                boton.disabled = true;
+                let palabra = ahorcado.palabra.toUpperCase().split('');
+                // console.log(ahorcado.letrasPalabra);
+                if (ahorcado.letrasPalabra.indexOf(letra) >= 0) {
+                    let i = 0;
+                    while (palabra.indexOf(letra, i) >= 0) {
+                        let index = palabra.indexOf(letra, i);
+                        document.querySelectorAll('#ahorcado button')[index].innerHTML = letra;
+                        i = index + 1;
+                    }
+                    ahorcado.letrasPalabra.splice(ahorcado.letrasPalabra.indexOf(letra), 1);
+                    if (ahorcado.letrasPalabra.length == 0) {
+                        ahorcado.ganador()
+                    }
+                    // console.log(ahorcado.letrasPalabra);
+                } else if (ahorcado.letrasErradas.indexOf(letra) == -1) {
+                    ahorcado.letrasErradas.push(letra);
+                    ahorcado.intentos--;
+                    ahorcado.fallos++;
+                    ahorcado.mostrarLetrasErradas();
+                    ahorcado.comprobarIntentos();
+                    // console.log(ahorcado.letrasErradas);
+                }
+                console.log(ahorcado.intentos);
+
+            },
+
+            ///////////////////////////////////////////////////////////
+            // Muestra una lista con las letras en que hemos errado 
+            // porque la palabra no las contiene            
+            ///////////////////////////////////////////////////////////
+
+            mostrarLetrasErradas: function () {
+                let salida = `Letras erradas: `;
+                ahorcado.letrasErradas.forEach(letra => {
+                    salida += letra + " ";
+                })
+                document.querySelector('#letrasErradas').innerHTML = salida;
+            },
+
+            ///////////////////////////////////////////////////////////
+            // Comprueba el numero de intentos que quedan y muestra 
+            // la imagen correspondiente
+            ///////////////////////////////////////////////////////////
+
+            comprobarIntentos: function () {
+                document.querySelector('#intentos').innerHTML = `<img style="width:8rem;height:auto" src="img/ahorcado_${this.intentos}.png"/>`;
+                let botones = document.querySelectorAll('#letras button');
+                if (this.intentos == 0) {
+                    botones.forEach(boton => {
+                        boton.disabled = true;
+                    })
+                    ahorcado.perdedor();
+
+                }
+            },
+
+            ///////////////////////////////////////////////////////////
+            // Muestra el mensaje de ganador
+            ///////////////////////////////////////////////////////////
+
+            ganador: function () {
+                let salida = `Has ganado! Fallos: ${ahorcado.fallos}`;
+                document.querySelector('#salida').innerHTML = salida;
+            },
+            //Realiza varias funciones cuando pierdas: desactiva botones, muestra mensaje de perdedor
+            perdedor: function () {
+                let salida = "Has perdido!";
+                document.querySelector('#salida').innerHTML = salida;
+            },
+            //Empieza el juego
+            empezar: function () {
+                ahorcado.intentos = 6;
+                ahorcado.fallos = 0;
+                ahorcado.letrasErradas = [];
+                ahorcado.elegirPalabraRandom();
+                ahorcado.crearDashes();
+                ahorcado.crearLetras();
+                ahorcado.mostrarLetrasErradas();
+                ahorcado.comprobarIntentos();
+                document.querySelector('#salida').innerHTML = "";
+            },
+
+
+        }
+        onload = () => {
+            document.querySelector('#empezar').onclick = ahorcado.empezar;
+            /* document.querySelector('#compLetra').onclick = ahorcado.comprobarLetra;
+            document.querySelector('#compPalabra').onclick = ahorcado.comprobarPalabra; */
+        }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+
+        form {
+            background-color: rgb(200, 200, 200);
+            display: grid;
+            padding: 1rem;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(5, 1fr);
+            align-items: center;
+            justify-items: center;
+            gap: 1rem;
+            border: darkgrey inset 5px;
+            height: 100vh;
+        }
+
+        #empezar {
+            border: none;
+            grid-column: span 2;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 1rem;
+            justify-self: center;
+            background-color: white;
+            border: darkgrey outset 5px;
+        }
+
+        h1 {
+            padding: .5rem;
+            text-align: center;
+            width: auto;
+            grid-column: span 2;
+        }
+
+        #letras button,
+        #ahorcado button {
+            font-size: 2rem;
+        }
+
+        #letras {
+            display: grid;
+            grid-template-columns: repeat(14, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 1rem;
+            position: relative;
+        }
+
+        #letras button {
+            background-color: white;
+            font-weight: bold;
+            color: black;
+            border: green solid 2px;
+            box-shadow: 3px 3px 3px rgb(50, 50, 50);
+        }
+
+        #letras button:disabled {
+            position: relative;
+            background-color: black;
+            color: white;
+            border: red solid 2px;
+            top: 3px;
+            left: 3px;
+            box-shadow: none;
+        }
+
+        #letrasErradas {
+            padding: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: red;
+            width: auto;
+            align-self: stretch;
+        }
+
+        #salida {
+            font-size: 3rem;
+            text-align: center;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="#" method="post" onsubmit="return false;">
+        <h1>Ahorcado</h1>
+        <p id="intentos"></p>
+        <p id="ahorcado"></p>
+        <!-- <p>
+            Letra: <input type="text" name="letra" id="letra">
+        </p>
+        <p>
+            Palabra: <input type="text" name="palabra" id="palabra">
+        </p> -->
+        <!-- <button id="compLetra" disabled>Comprobar letra</button>
+            <button id="compPalabra" disabled>Comprobar palabra</button> -->
+        <p id="letrasErradas"></p>
+        <p id="letras"></p>
+        <button id="empezar" autofocus>NUEVA PALABRA</button>
+        <p id="salida"></p>
+    </form>
+</body>
+
+</html>
