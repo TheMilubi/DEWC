@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejercicio 1</title>
+    <script>
+        var a = 0;
+        var b = 0;
+        var validar = () => {
+            let enviar = true;
+
+            let texto = document.querySelector('#usuario').value;
+            salida = "";
+            if (texto == "") {
+                salida += "<br>El dato XXXXX debe YYYYY"
+                enviar = false;
+            }
+
+            let email = document.querySelector('#email').value;
+            if (email == "") {
+                salida += "<br>Email no introducido"
+                enviar = false;
+            } else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+                salida += "<br>Email no valido"
+                enviar = false;
+            }
+
+            let passwd = document.querySelector('#passwd').value;
+            if (passwd == "") {
+                salida += "<br>Introduce la contraseña";
+                enviar = false;
+            } else if (!/[a-zA-Z0-9]{8,}/.test(passwd)) {
+                salida += "<br>Introduce una contraseña con al menos 8 caracteres";
+                enviar = false;
+            }
+
+            let cpasswd = document.querySelector('#cpasswd').value;
+            if (cpasswd == "") {
+                salida += "<br>Repite la contraseña";
+                enviar = false;
+            } else if (passwd != cpasswd) {
+                salida += "<br>Las contraseñas no coinciden"
+                enviar = false;
+            }
+
+            let sumabot = document.querySelector('#sumabot').value;
+            if (sumabot == "") {
+                salida += "<br>Contesta la comprobación de bots";
+                enviar = false;
+            } else if (sumabot != (a + b)) {
+                crearComprobacion();
+                salida += "<br>Pareces ser un bot";
+                enviar = false;
+            }
+            console.log(a);
+            console.log(b);
+            console.log(sumabot);
+            document.querySelector('#salida').innerHTML = salida;
+            return enviar;
+        }
+        var crearComprobacion = () => {
+            a = Math.floor(Math.random() * 10 + 1);
+            b = Math.floor(Math.random() * 10 + 1);
+            document.querySelector('#bot').innerHTML = `${a} + ${b} = <input type="number" id="sumabot">`;
+        }
+        onload = () => {
+            document.querySelector('#activa').onchange = () => {
+                document.querySelector('input[type=submit]').disabled = !document.querySelector('#activa').checked
+            }
+            crearComprobacion();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Crear cuenta</h1>
+    <form method="post" action="" onsubmit="return validar()">
+        <p>Nombre: <input type="text" name="usuario" id="usuario"></p>
+        <p>Email: <input type="email" name="email" id="email"></p>
+        <p>Contraseña: <input type="password" name="passwd" id="passwd"></p>
+        <p>Repite contraseña: <input type="password" name="cpasswd" id="cpasswd"></p>
+        <p id="bot"></p>
+        <p><input type="checkbox" name="activa" id="activa"> Acepto las condiciones</p>
+        <input type="submit" value="Crear cuenta" disabled>
+    </form>
+    <p style="color:red" id="salida"></p>
+
+</body>
+
+</html>

@@ -6,18 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ahorcado</title>
+    <script src="diccionario.js"></script>
     <script>
         var ahorcado = {
-            palabras: [
-                'Lazo',
-                'Perro',
-                'Zorro',
-                'Gato',
-                'Elefante',
-                'Mandril',
-                'Leon',
-                'Capital de España'
-            ],
+            palabras: JSON.parse(diccionario),
             palabra: "",
             intentos: 6,
             fallos: 0,
@@ -69,6 +61,14 @@
                 })
 
             },
+            mostrarTodasLetras: function () {
+                document.querySelector('#ahorcado').innerHTML = "";
+                let arr = this.palabra.split('');
+                arr.forEach(letra => {
+                    if (letra == " ") document.querySelector('#ahorcado').innerHTML += `<button style="width:auto;visibility:hidden">_</button>`;
+                    else document.querySelector('#ahorcado').innerHTML += `<button style="width:auto;">${letra}</button>`;
+                });
+            },
 
             ////////////////////////////////////////////////////////////////////////
             // Comprueba que la si la letra pulsada pertenece a la palabra: 
@@ -91,6 +91,10 @@
                     }
                     ahorcado.letrasPalabra.splice(ahorcado.letrasPalabra.indexOf(letra), 1);
                     if (ahorcado.letrasPalabra.length == 0) {
+                        let botones = document.querySelectorAll('#letras button');
+                        botones.forEach(boton => {
+                            boton.disabled = true;
+                        })
                         ahorcado.ganador()
                     }
                     // console.log(ahorcado.letrasPalabra);
@@ -102,9 +106,10 @@
                     ahorcado.comprobarIntentos();
                     // console.log(ahorcado.letrasErradas);
                 }
-                console.log(ahorcado.intentos);
+                // console.log(ahorcado.intentos);
 
             },
+
 
             ///////////////////////////////////////////////////////////
             // Muestra una lista con las letras en que hemos errado 
@@ -146,6 +151,7 @@
             },
             //Realiza varias funciones cuando pierdas: desactiva botones, muestra mensaje de perdedor
             perdedor: function () {
+                ahorcado.mostrarTodasLetras();
                 let salida = "Has perdido!";
                 document.querySelector('#salida').innerHTML = salida;
             },
@@ -163,6 +169,7 @@
             },
 
 
+
         }
         onload = () => {
             document.querySelector('#empezar').onclick = ahorcado.empezar;
@@ -178,37 +185,42 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
+        body {
+            padding: 0 10%;
+            background-color: darkred;
+        }
 
+        h1 {
+            color: white;
+        }
 
         form {
-            background-color: rgb(200, 200, 200);
+            background-color: lightyellow;
             display: grid;
             padding: 1rem;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: repeat(5, 1fr);
+            grid-auto-rows: max-content;
             align-items: center;
             justify-items: center;
             gap: 1rem;
-            border: darkgrey inset 5px;
-            height: 100vh;
+            border: red solid .2rem;
+            height: max-content;
         }
 
         #empezar {
-            border: none;
             grid-column: span 2;
             font-size: 1.5rem;
             font-weight: bold;
             padding: 1rem;
             justify-self: center;
-            background-color: white;
-            border: darkgrey outset 5px;
         }
 
         h1 {
             padding: .5rem;
             text-align: center;
             width: auto;
-            grid-column: span 2;
+            background-color: black;
+            border: grey .2rem solid;
         }
 
         #letras button,
@@ -216,16 +228,22 @@
             font-size: 2rem;
         }
 
+        #ahorcado {
+            grid-column: span 2;
+        }
+
         #letras {
+            grid-column: span 2;
             display: grid;
-            grid-template-columns: repeat(14, 1fr);
-            grid-template-rows: 1fr 1fr;
+            grid-template-columns: repeat(13, 1fr);
+            grid-auto-rows: max-content;
             gap: 1rem;
             position: relative;
         }
 
         #letras button {
             background-color: white;
+            padding: .5rem;
             font-weight: bold;
             color: black;
             border: green solid 2px;
@@ -260,10 +278,13 @@
 </head>
 
 <body>
-    <form action="#" method="post" onsubmit="return false;">
+    <header>
         <h1>Ahorcado</h1>
-        <p id="intentos"></p>
+    </header>
+    <form action="#" method="post" onsubmit="return false;">
+
         <p id="ahorcado"></p>
+        <p id="intentos"></p>
         <!-- <p>
             Letra: <input type="text" name="letra" id="letra">
         </p>
