@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adivina el Número</title>
+    <style>
+        * {
+            outline: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            padding: 1rem 10%;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: max-content;
+            gap: 2rem;
+        }
+        #control {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-auto-rows: max-content;
+            gap: .5rem;
+        }
+
+        #control button {
+            border-radius: .25rem;
+            padding: .15rem .2rem;
+        }
+        #control button:disabled {
+            background-color: black;
+            border: outset red 1px;
+            border-radius: .25rem;
+            
+            color: white;
+            padding: .15rem .2rem;
+        }
+
+        #control button.ganador {
+            outline: green 2px solid;
+            background-color: lightgreen;
+            border: lightgreen 1px outset;
+        }
+    </style>
+    <script>
+        var adivina = {
+            numero: -1,
+            intentos: 0,
+            asignaRandom: () => {
+                adivina.numero = Math.floor(Math.random() * 100 + 1);
+            },
+            comprobarNum: (eventB) => {
+                let num = eventB.innerHTML;
+                let botones = document.querySelectorAll('#control button');
+                if (num == adivina.numero) {
+                    botones.forEach(boton => {
+                        if (boton != eventB) boton.disabled = true;
+                    })
+                    adivina.intentos++;
+                    eventB.classList.add('ganador');
+                    adivina.ganador();
+                }
+                else if (num < adivina.numero) {
+                    for (let i = 0; i < num; i++) {
+                        botones[i].disabled = true;
+                    }
+                    adivina.intentos++;
+                }
+                else {
+                    for (let i = num - 1; i < 100; i++) {
+                        botones[i].disabled = true;
+                    }
+                    adivina.intentos++;
+                }
+            },
+            ganador: () => {
+                let mensaje = document.querySelector('#ganador');
+                mensaje.innerHTML = `¡Has acertado! Intentos: ${adivina.intentos}`;
+            },
+            start: () => {
+                adivina.asignaRandom();
+                adivina.intentos = 0;
+                document.querySelector('#ganador').innerHTML = "";
+                document.querySelector('#empezar').innerHTML = "NUEVO NUMERO";
+                let control = document.querySelector('#control');
+                control.style.display = "grid"
+                control.innerHTML = "";
+                for (let i = 1; i <= 100; i++) {
+                    control.innerHTML += `<button onclick="adivina.comprobarNum(this)">${i}</button>`;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Adivina el número</h1>
+
+        <div id="control" style="display: none;"></div>
+        <button id="empezar" onclick="adivina.start()">EMPEZAR EL JUEGO</button>
+        <div id="ganador"></div>
+
+    </div>
+
+</body>
+
+</html>

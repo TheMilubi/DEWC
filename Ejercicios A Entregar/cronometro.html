@@ -1,24 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cronómetro</title>
+    <link rel="stylesheet" href="cronometro.css">
     <script>
         var cronometro = {
             tiempo: 0,
-            start: function(){
-                
+            tiempos: [],
+            intervalo: 0,
+            start: function () {
+                if (cronometro.intervalo == 0) {
+                    cronometro.intervalo = setInterval(() => {
+                        cronometro.tiempo += 1;
+                        cronometro.mostrar();
+                    }, 10);
+                }
+            },
+            toString: function () {
+                let tiempo = cronometro.tiempo;
+                let h = Math.floor(tiempo / 100 / 3600);
+                h = (h < 10) ? `0${h}` : h;
+                tiempo = tiempo % (3600 * 100);
+                let m = Math.floor(tiempo / 100 / 60);
+                tiempo = tiempo % (100 * 60);
+                m = (m < 10) ? `0${m}` : m;
+                let s = Math.floor(tiempo / 100);
+                tiempo = tiempo % 100;
+                s = (s < 10) ? `0${s}` : s;
+                let centS = /* (tiempo < 100) ? `0${tiempo}` : */ (tiempo < 10) ? `0${tiempo}` : tiempo;
+                return `${h}:${m}:${s}.${centS}`;
+            },
+            mostrar: function () {
+                let crono = document.querySelector('#cronometro');
+                crono.innerHTML = cronometro.toString();
+                /* let tiempo = cronometro.toString().split(':');
+                let hora = document.querySelector("#hora");
+                let minutos = document.querySelector("#minutos");
+                let segundos = document.querySelector("#segundos");
+                let milesimas = document.querySelector("#milesimas");
+                hora.innerHTML = tiempo[0];
+                minutos.innerHTML = tiempo[1];
+                segundos.innerHTML = tiempo[2];
+                milesimas.innerHTML = tiempo[3]; */
+            },
+            mostrarMarcas: function(){
+                let marcas = document.querySelector('#tiempos')
+                marcas.innerHTML = ""
+                cronometro.tiempos.forEach(marca => {
+                    marcas.innerHTML += `<p>${marca}</p>`
+                })
+            },
+            stop: function () {
+                clearInterval(cronometro.intervalo);
+                cronometro.tiempos.push(cronometro.toString());
+                cronometro.intervalo = 0;
+                cronometro.mostrarMarcas();
+            },
+            reset: function () {
+                cronometro.tiempo = 0;
+                cronometro.mostrar();
+            },
+            clear: function(){
+                cronometro.tiempos = [];
+                cronometro.mostrarMarcas();
             }
         }
     </script>
 </head>
 
 <body>
-    <div id="cronometro"></div>
-
+    <h1>Cronómetro</h1>
+    <div id="cronometro">00:00:00.00</div>
+    <button id="start" onclick="cronometro.start()">Start</button>
+    <button id="stop" onclick="cronometro.stop()">Stop</button>
+    <button id="reset" onclick="cronometro.reset()">Reset</button>
+    <div>
+        <h2>Marcas</h2>
+        <div id="tiempos"></div>
+        <button id="clear" onclick="cronometro.clear()">Clear</button>
+    </div>
 </body>
 
 </html>
