@@ -8,6 +8,10 @@
     <title>Ahorcado</title>
     <script src="diccionario.js"></script>
     <script>
+        function eliminarDiacriticos(texto) {
+            return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        }
+
         var ahorcado = {
             palabras: JSON.parse(diccionario),
             palabra: "",
@@ -23,7 +27,7 @@
             elegirPalabraRandom: function () {
                 let random = Math.floor(Math.random() * this.palabras.length);
                 let palabra = this.palabras[random];
-                ahorcado.palabra = palabra.toUpperCase();
+                ahorcado.palabra = eliminarDiacriticos(palabra.toLocaleUpperCase());
                 let l = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
                 let letters = l.split('');
                 ahorcado.letrasPalabra = [];
