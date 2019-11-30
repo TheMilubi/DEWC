@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejemplo 3 AJAX</title>
+    <script>
+        var enviar = function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                console.log(this.readyState);
+                if (this.readyState == 4 && this.status == 200) {
+                    document.querySelector('#salida').innerHTML = this.responseText;
+                }
+            }
+            var n = document.querySelector('#n')
+            xhttp.open("GET", `datos.php?n=${n.value}`, true);
+            xhttp.send();
+        }
+    </script>
+</head>
+<input type="number" name="n" id="n"><br>
+<input type="submit" onclick="enviar()" value="Enviar"><br>
+<div id="salida"></div>
+<body>
+
+</body>
+
+</html>

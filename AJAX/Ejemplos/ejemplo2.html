@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejemplo 2 AJAX</title>
+    <script>
+        var descifrador = {
+            alfabetos: [],
+            rotado: 0,
+            alfabetoRotado: [],
+            descifrar: () => {
+                //Select
+                let alfa = document.querySelector('#alfa');
+                //Indice del alfabeto en el objeto
+                let alfabeto = alfa.options[alfa.selectedIndex].value;
+                //Texto a descifrar
+                let texto = document.querySelector('#texto').value;
+                descifrador.rotado = document.querySelector('#rotado').value;
+                if (descifrador.rotado < 0 || descifrador.rotado > descifrador.alfabetos[alfabeto].alfabeto.length) {
+                    document.querySelector('#descifrado').innerHTML = "Número de rotado debe ser mayor o igual a 0 y menor o igual que el número de letras del alfabeto seleccionado";
+                }
+                else {
+                    //Crear un array donde cada posicion corresponde con una letra (0 = A, 1 = B), y cuyos valores son la letra descifrada
+                    for (let i = 0; i < descifrador.alfabetos[alfabeto].alfabeto.length; i++) {
+                        descifrador.alfabetoRotado[i] = descifrador.alfabetos[alfabeto].alfabeto.split('')[(descifrador.alfabetos[alfabeto].alfabeto.length + i - descifrador.rotado) % descifrador.alfabetos[alfabeto].alfabeto.length];
+                    }
+                    let text = texto.split('');
+                    let cadena = "";
+                    //console.log(texto);
+                    text.forEach(letra => {
+                        if (descifrador.alfabetos[alfabeto].alfabeto.split('').indexOf(letra) >= 0) {
+                            cadena += descifrador.alfabetoRotado[descifrador.alfabetos[alfabeto].alfabeto.split('').indexOf(letra)];
+                            //console.log(descifrador.alfabetoRotado[descifrador.alfabetos[alfabeto].alfabeto.split('').indexOf(letra)]);
+                        }
+                        else {
+                            cadena += letra;
+                        }
+                    });
+                    //console.log(descifrador.alfabetoRotado);
+                    //console.log(cadena);
+                    document.querySelector('#descifrado').innerHTML = cadena;
+                }
+            }
+        };
+
+    </script>
+    <script>
+        onload = () => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    var alfabetos = JSON.parse(this.responseText);
+                    console.log(alfabetos);
+                    descifrador.alfabetos = JSON.parse(this.responseText);
+                    alfabetos.forEach((alfabeto, index) => {
+                        document.querySelector('#alfa').innerHTML += `<option value="${index}">${alfabeto.idioma}</option>`;
+                    });
+                }
+            }
+            xhttp.open('GET', 'datos.json', true);
+            xhttp.send();
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <h2>Cifrado César</h2>
+    <h3>- Descifrar -</h3>
+    <p>Alfabeto: <select name="alfa" id="alfa"></select>
+    </p>
+    <p>
+        Texto a descifrar:
+        <textarea name="texto" id="texto" cols="60" rows="10"></textarea>
+    </p>
+    <p>Nivel de Rotado
+        <input type="number" min="0" name="rotado" id="rotado">
+    </p>
+    <input type="submit" onclick="descifrador.descifrar()" value="Descifrar">
+    <p style="color:red" id="descifrado"></p>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Informática FRV</title>
+    <script>
+        var peticion = new XMLHttpRequest();
+        var instituto = {};
+        peticion.addEventListener("load", () => {
+            let grupos = document.getElementById('instituto');
+            console.log(peticion.responseText);
+            instituto = JSON.parse(peticion.responseText);
+            grupos.innerHTML = "";
+            grupos.innerHTML += `<span>Nombre:</span><span>${instituto.nombre}</span>`;
+            grupos.innerHTML += `<span>Código:</span><span>${instituto.codigo}</span>`;
+            instituto.grupos.forEach(grupo => {
+
+                grupos.innerHTML += "<div id='line'></div>";
+                grupos.innerHTML += `<span>Grupo:</span><span>${grupo.grupo}</span>`;
+                grupos.innerHTML += `<span>Número de alumnos:</span><span>${grupo.numAlumnos}</span>`;
+                grupos.innerHTML += `<span id="profesores">Prefesores:</span><span>${grupo.profesores.join(', ')}</span>`;
+                
+            });
+        })
+        peticion.open('GET', 'informaticaFRV.json');
+        peticion.send();
+    </script>
+    <style>
+        #instituto {
+            display: grid;
+            grid-template-columns: max-content max-content;
+            grid-auto-rows: max-content;
+            gap: 1rem;
+        }
+        #line{
+            grid-column: span 2;
+            justify-self: stretch;
+            border: black solid 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Grupos de Informática</h1>
+    <div id="instituto"></div>
+</body>
+
+</html>

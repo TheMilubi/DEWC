@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejemplo 5 Ajax POST</title>
+    <script>
+        var enviar = function () {
+            let xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener('progress', () => {
+                console.log((event.loaded / event.total * 100) + "%");
+                document.getElementById('porcentaje').innerHTML = (event.loaded / event.total * 100) + "%";
+                document.getElementById('porcentaje').style.width = (event.loaded / event.total * 100) + "%";
+                if (event.loaded / event.total == 1) {
+                    document.getElementById('porcentaje').style.backgroundColor = "green";
+                }
+            })
+            xhr.addEventListener("load", () => {
+                console.log(xhr.responseText);
+            })
+            xhr.open('POST', "post.php");
+            let formulario = document.getElementById('form');
+            xhr.send(new FormData(formulario));
+            // xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+            // xhr.send(`nombre=${document.getElementById('nombre').value}&password=\
+            // ${document.getElementById('password').value}`);
+        }
+    </script>
+</head>
+
+<body>
+    <form id="form" action="#" method="post" onsubmit="return false;">
+        Nombre: <input type="text" name="nombre" id="nombre"><br>
+        Contraseña: <input type="password" name="password" id="password"><br>
+        Fotografia: <input type="file" name="foto" id="foto"><br>
+        <button id="submit" onclick="enviar()">Enviar</button>
+    </form>
+    <div id="porcentaje" style="background-color: blue;"></div>
+
+</body>
+
+</html>

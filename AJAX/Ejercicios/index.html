@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Municipios de España</title>
+    <script>
+        onload = () => {
+            var x = new XMLHttpRequest();
+            x.addEventListener('load', () => {
+                let autonomias = JSON.parse(x.responseText);
+                console.log(autonomias);
+                cargaAutonomias(autonomias);
+            })
+            x.open('GET', 'autonomias.php', true);
+            x.send();
+            var auto = document.getElementById('autonomia');
+            auto.onchange = () => {
+                let seleccionado = auto.value;
+                console.log(seleccionado);
+                let xhttp = new XMLHttpRequest();
+                xhttp.addEventListener('load', () => {
+                    let provincias = JSON.parse(xhttp.responseText);
+                    console.log(provincias);
+                    cargaProvincias(provincias);
+                })
+                xhttp.open('GET', `provincias.php?autonomia=${seleccionado}`, true);
+                xhttp.send();
+            }
+            var prov = document.getElementById('provincia');
+            prov.onchange = () => {
+                let seleccionado = prov.value;
+                console.log(seleccionado);
+                let xhttp = new XMLHttpRequest();
+                xhttp.addEventListener('load', () => {
+                    let municipios = JSON.parse(xhttp.responseText);
+                    console.log(municipios);
+                    cargaMunicipios(municipios);
+                })
+                xhttp.open('GET', `municipios.php?provincia=${seleccionado}`, true);
+                xhttp.send();
+            }
+            
+
+        }
+
+        function cargaAutonomias(autonomias) {
+            //console.log(autonomias);
+            let s = document.getElementById('autonomia');
+            s.innerHTML = "<option value='-1'>-------- Elegir -------</option>";
+            autonomias.forEach(autonomia => {
+                //console.log(autonomia);
+                s.innerHTML += `<option value="${autonomia.id}">${autonomia.autonomia}</option>`;
+            });
+        }
+        function cargaProvincias(provincias) {
+            //console.log(autonomias);
+            let s = document.getElementById('provincia');
+            s.innerHTML = "<option value='-1'>-------- Elegir -------</option>";
+            provincias.forEach(provincia => {
+                //console.log(provincia);
+                s.innerHTML += `<option value="${provincia.id}">${provincia.provincia}</option>`;
+            });
+        }
+        function cargaMunicipios(municipios) {
+            //console.log(autonomias);
+            let s = document.getElementById('municipio');
+            s.innerHTML = "<option value='-1'>-------- Elegir -------</option>";
+            municipios.forEach(municipio => {
+                // console.log(municipio);
+                s.innerHTML += `<option value="${municipio.id}">${municipio.municipio}</option>`;
+            });
+        }
+        function wiki(){
+            let m = document.getElementById('municipio');
+            let municipio = m.options[m.selectedIndex].innerHTML;
+            window.open(`https://es.wikipedia.org/wiki/${municipio}`);
+        }
+
+    </script>
+    <style>
+        /*select, option{
+            text-align: center;
+        }*/
+    </style>
+</head>
+
+<body>
+    <form id="form">
+        <h1>Municipios de España</h1>
+        Autonomía <select name="autonomia" id="autonomia"></select><br><br>
+        Provincia <select name="provincia" id="provincia">
+                <option value='-1'>-------- Elegir -------</option>
+            </select><br><br>
+            Municipio <select onchange="wiki()" name="municipio" id="municipio">
+                <option value='-1'>-------- Elegir -------</option>
+        </select><br><br>
+    </form>
+</body>
+
+</html>
