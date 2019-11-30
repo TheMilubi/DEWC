@@ -47,7 +47,7 @@
                 segundos.innerHTML = tiempo[2];
                 milesimas.innerHTML = tiempo[3]; */
             },
-            mostrarMarcas: function(){
+            mostrarMarcas: function () {
                 let marcas = document.querySelector('#tiempos')
                 marcas.innerHTML = ""
                 cronometro.tiempos.forEach(marca => {
@@ -64,24 +64,63 @@
                 cronometro.tiempo = 0;
                 cronometro.mostrar();
             },
-            clear: function(){
+            clear: function () {
                 cronometro.tiempos = [];
                 cronometro.mostrarMarcas();
             }
         }
     </script>
+    <style>
+        /* @import url('https://fonts.googleapis.com/css?family=Nova+Square&display=swap'); */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        #cronometro {
+            font-size: 3rem;
+        }
+
+        .contenedor {
+            display: grid;
+            padding: 1rem;
+            grid-template-columns: max-content;
+            grid-auto-rows: max-content;
+            justify-content: center;
+            gap: 1rem;
+
+        }
+
+        .botones {
+            display: grid;
+
+            grid-template-columns: max-content max-content max-content;
+            grid-auto-rows: max-content;
+            justify-content: center;
+            gap: 1rem;
+
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Cronómetro</h1>
-    <div id="cronometro">00:00:00.00</div>
-    <button id="start" onclick="cronometro.start()">Start</button>
-    <button id="stop" onclick="cronometro.stop()">Stop</button>
-    <button id="reset" onclick="cronometro.reset()">Reset</button>
-    <div>
+    <div class="contenedor">
+
+        <h1>Cronómetro</h1>
+        <div id="cronometro">00:00:00.00</div>
+        <div class="botones">
+            <button id="start" onclick="cronometro.start()">Start</button>
+            <button id="stop" onclick="cronometro.stop()">Stop</button>
+            <button id="reset" onclick="cronometro.reset()">Reset</button>
+        </div>
+
         <h2>Marcas</h2>
         <div id="tiempos"></div>
         <button id="clear" onclick="cronometro.clear()">Clear</button>
+
     </div>
 </body>
 

@@ -1,0 +1,45 @@
+[
+    {
+        "tipo": "radio",
+        "pregunta": "¿Con que comando añadimos elementos a una tabla en SQL?",
+        "respuestas": [
+            "SELECT",
+            "INSERT",
+            "DELETE",
+            "UPDATE"
+        ],
+        "correcta": [1]
+    },
+    {
+        "tipo": "checkbox",
+        "pregunta": "¿Qué comandos modifican los elementos de una tabla en SQL?",
+        "respuestas": [
+            "SELECT",
+            "INSERT",
+            "DELETE",
+            "UPDATE"
+        ],
+        "correcta": [
+            1,
+            2,
+            3
+        ]
+    },
+    {
+        "tipo": "select",
+        "pregunta": "Usamos este comando para ver información en SQL: ",
+        "respuestas": [
+            "SELECT",
+            "INSERT",
+            "DELETE",
+            "UPDATE"
+        ],
+        "correcta": 0
+    },
+    {
+        "tipo": "text",
+        "pregunta": "Comando para borrar información de una tabla en SQL:",
+        "respuestas": [],
+        "correcta": "DELETE"
+    }
+]

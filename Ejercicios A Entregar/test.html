@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mini Test</title>
+    <script>
+        var preguntas = [];
+        var usuario = {
+            nombre: "Anónimo",
+            porcentaje: 0,
+            intentos: 0
+        }
+        window.onload = function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.addEventListener('load', () => {
+                preguntas = JSON.parse(xhttp.responseText);
+                mostrarPreguntas();
+            })
+            xhttp.open('GET', 'preguntas.json', true);
+            xhttp.send();
+            var mostrarPreguntas = () => {
+                var test = "";
+                copia = preguntas.slice();
+                copia.sort(function (a, b) { return 0.5 - Math.random() }); //Sort random de preguntas.
+                copia.forEach((pregunta, indice) => {
+                    test += `<p id="p${preguntas.indexOf(pregunta)}">${indice + 1}. ${pregunta.pregunta}<p>`;
+                    if (pregunta.tipo == "select") {
+                        test += `<select name="${preguntas.indexOf(pregunta)}">`;
+                        pregunta.respuestas.forEach((respuesta, indiceR) => {
+                            test += `<option value="${indiceR}">${respuesta}</option>`;
+                        })
+                        test += "</select>";
+                    }
+                    else if (pregunta.tipo == "text") {
+                        test += `<input type="${pregunta.tipo}" name="${preguntas.indexOf(pregunta)}"><br>`;
+                    }
+                    else {
+                        pregunta.respuestas.forEach((respuesta, indiceR) => {
+                            test += `<input type="${pregunta.tipo}" name="${preguntas.indexOf(pregunta)}" value="${indiceR}">${respuesta}<br>`;
+                        })
+                    }
+                })
+                document.getElementById('contenido').innerHTML = test;
+            }
+            document.getElementById('corregir').onclick = () => {
+                //console.log('corregir');
+                let aciertos = 0;
+                let fallos = 0;
+                for (let i = 0; i < preguntas.length; i++) {
+                    let p = document.getElementsByName(`${i}`);
+                    if (preguntas[i].tipo == "select") {
+                        //console.log(p[0].value);
+                        let preg = document.getElementById(`p${i}`);
+                        if (p[0].value == preguntas[i].correcta) {
+                            aciertos++;
+                            preg.style.color = "green";
+                        }
+                        else {
+                            fallos++;
+                            preg.style.color = "red";
+                        }
+                    }
+                    else if (preguntas[i].tipo == "text") {
+                        //console.log(p[0].value);
+                        let preg = document.getElementById(`p${i}`);
+                        if (p[0].value.toLocaleUpperCase() == preguntas[i].correcta) {
+                            aciertos++;
+                            preg.style.color = "green";
+                        }
+                        else {
+                            fallos++;
+                            preg.style.color = "red";
+                        }
+                    }
+                    else {
+                        let f = 0;
+                        preguntas[i].correcta.forEach(c => {
+                            if (!p[c].checked) {
+                                f++;
+                            }
+                        })
+                        let preg = document.getElementById(`p${i}`);
+                        if (f > 0) {
+                            fallos++;
+                            preg.style.color = "red";
+                        } else {
+                            aciertos++;
+                            preg.style.color = "green";
+                        }
+                    }
+
+                }
+                usuario.porcentaje = aciertos / (aciertos + fallos) * 100;
+                usuario.intentos++;
+                alert(`ACIERTOS: ${aciertos}\nFALLOS: ${fallos}\nINTENTOS: ${usuario.intentos}`);
+                document.getElementById('corregir').innerHTML = "Reintentar";
+            }
+        }
+    </script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #333;
+            padding: 1rem;
+        }
+        .container{
+            margin:auto;
+            display: grid;
+            grid-template-columns: max-content;
+            grid-auto-columns: max-content;
+            gap: 1rem;
+            padding: 1rem;
+            align-self: center;
+            background-color: #EEE;
+            border: double black .3rem;
+            width: max-content;
+        }
+        #contenido{
+            display: grid;
+            
+            grid-template-columns: max-content;
+            grid-auto-columns: max-content;
+            gap: 1rem;
+        }
+        input{
+            margin-right: .5rem;
+        }
+        #corregir{
+            justify-self: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mini-test</h1>
+        <div id="contenido"></div>
+        <button id="corregir">Corregir</button>
+    </div>
+</body>
+
+</html>
