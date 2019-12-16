@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Montiel Música S.L.</title>
+    <script>
+        var login = function () {
+            let xhr = new XMLHttpRequest();
+            let profesor = [];
+            xhr.addEventListener('load', () => {
+                profesor = JSON.parse(xhr.responseText);
+                if (profesor.length == 0) alert("Usuario o password desconocidos");
+                else {
+                    console.log(profesor);
+                    presentarListado(profesor[0]);
+                }
+            })
+            xhr.open('POST', 'servidor/login.php');
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(`usuario=${document.getElementById('usuario').value}&password=${document.getElementById('password').value}`);
+        }
+        let presentarListado = function (profesor) {
+            let xhr = new XMLHttpRequest();
+            let clases = [];
+            xhr.addEventListener('load', () => {
+                clases = JSON.parse(xhr.responseText);
+                console.log(clases);
+                let resultado = document.getElementById('resultado');
+                resultado.innerHTML = "";
+                let diaSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+                resultado.innerHTML = `<h2>Lista de clase de los ${diaSemana[new Date().getDay()]} de ${profesor.nombre}</h2>`;
+                if (clases.length == 0) resultado.innerHTML = "!! USTED NO TIENE CLASES HOY !!";
+                else {
+                    resultado.innerHTML += "<table id='tabla'><table>";
+                    let tabla = document.getElementById('tabla');
+                    tabla.innerHTML += "<tr><td>Nombre</td><td>Instrumento</td><td>Hora</td></tr>";
+                    clases.forEach(clase => {
+                        tabla.innerHTML += `<tr onmouseover='mostrarTelefono(${clase.telefono})' onmouseout='quitarTelfono()' id='${clase.id}'>\
+                            <td>${clase.nombre}</td>\
+                            <td>${clase.instrumento}</td>\
+                            <td>${clase.hora}</td>\
+                            <td><button onclick="ponerFalta(${clase.id},'${clase.hora}')">Poner falta</button></td>\
+                        </tr>`;
+                    })
+
+                }
+
+            })
+            let diaSemana = ["D", "L", "M", "X", "J", "V", "S"];
+            xhr.open('GET', `servidor/lista.php?profesor=${profesor.codigo}&dia=${diaSemana[new Date().getDay()]}`, true);
+            xhr.send();
+        }
+        let mostrarTelefono = function (telefono) {
+            document.getElementById('telefono').innerHTML = "Teléfono: " + telefono;
+        }
+        let quitarTelfono = function () {
+            document.getElementById('telefono').innerHTML = "";
+        }
+        let ponerFalta = function (id, hora) {
+            let xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', () => {
+                if(xhr.responseText == "ok") alert("Ok");
+                else alert("Falta ya registrada");
+            })
+            xhr.open('POST','servidor/falta.php');
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            let date = new Date();
+            let dia = date.getDate();
+            let mes = date.getMonth()+1;
+            let anio = date.getFullYear();
+            let fecha = `${anio}-${mes}-${dia}`;
+            xhr.send(`alumno=${id}&fecha=${fecha}&hora=${hora}`);
+
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Montiel Música S.L.</h1>
+    <form id="form" method="post" onsubmit="return false;">
+        <p>Usuario: <input type="text" name="usuario" id="usuario"></p>
+        <p>Contraseña: <input type="password" name="password" id="password"></p>
+        <button onclick="login()">Login</button>
+    </form><br>
+    <div id="resultado"></div><br>
+    <div id="telefono"></div>
+</body>
+
+</html>
