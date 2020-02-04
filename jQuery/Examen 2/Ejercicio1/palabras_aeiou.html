@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Palabras con todas las vocales</title>
+    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="diccionario.js"></script>
+    <style>
+        #palabras {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 1rem;
+        }
+    </style>
+    <script>
+        var vocales = {
+            /**
+             * Muestra las palabras con todas las vocales.
+             * @param {String} id Id de la etiqueta en la que se mostraran las palabras y su número.
+             * @param {String} diccionario Variable que contiene el diccionario.
+             * @return {Array<String>} diccionario Devuelve un array con las palabras filtradas (que contengas todas las vocales) y ordenadas.
+             */
+            mostrarPalabras: (id, diccionario) => {
+                diccionario = JSON.parse(diccionario).filter(palabra => {
+                    return /(?=.*[AÁaá])(?=.*[EÉeé])(?=.*[IÍií])(?=.*[OÓoó])(?=.*[UÚuú])/.test(palabra)
+                }).sort((a, b) => {
+                    return a.toLowerCase().localeCompare(b.toLowerCase())
+                })
+
+                $(`#${id}`).html(`<p>Nº de palabras: ${diccionario.length}<br><br>Palabras:</p><hr><p id='palabras'><span>${diccionario.join('</span><span>')}</span></p><hr>`)
+                return diccionario
+            }
+        }
+        $(document).ready(() => {
+            vocales.mostrarPalabras('vocales', palabras)
+        })
+    </script>
+</head>
+
+<body>
+    <h1>Palabras que contienen todas las vocales</h1>
+    <div id="vocales"></div>
+</body>
+
+</html>

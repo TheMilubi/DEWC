@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generador de Tests</title>
+    <style>
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+    </style>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        var n = 0
+        var preguntas = []
+        var intervalo = 0
+        $(document).ready(function () {
+
+            $('#gen').click(() => {
+                Test.generarTest($('#categoria').val(), $('#cantidad').val())
+                n = $('#cantidad').val()
+                if (intervalo) clearInterval(intervalo)
+                var r = new Reloj
+                $('#contador').html(r.toString())
+                intervalo = setInterval(() => {
+                    r.suma()
+                    $('#contador').html(r.toString())
+                }, 1000)
+                $('[type=radio]').attr('disabled', false)
+                $('#corregir').attr('disabled', false)
+
+            })
+
+            $('#corregir').click(() => {
+                Test.corregirTest()
+                clearInterval(intervalo)
+            })
+
+        });
+        class Reloj {
+            segundos = 0;
+            /**
+             * Crea un instancia de la clase Reloj.
+             * @param {Number} segundos Valor inicial del reloj en segundos, valor por defecto: 0. 
+             */
+            constructor(segundos = 0) {
+                this.segundos = segundos
+            }
+            /**
+             * Suma un segundo al reloj.
+             */
+            suma() {
+                this.segundos += 1
+            }
+            /**
+             * Devuelve los segundos del reloj a cero.
+             */
+            reset() {
+                this.segundos = 0
+            }
+            /**
+             * Devuelve los segundos en formato mm:ss.
+             * @return {String} string
+             */
+            toString() {
+                let string = ""
+                let min = Math.floor(this.segundos / 60)
+                let seg = this.segundos % 60
+                string += ((min < 10) ? '0' + min : min) + ':' + ((seg < 10) ? '0' + seg : seg)
+                return string
+            }
+        }
+        var Test = {
+            /**
+            * Genera un test aleatorio en el elemento con id: 'test'.
+            * @param {Number} categoria Categoría de a la que pertenece la pregunta.
+            * @param {Number} limite Determina el número de preguntas a crear.
+            */
+            generarTest: (categoria, limite) => {
+                $('#test').html("")
+                $.ajax({
+                    type: "get",
+                    url: "test.json",
+                    dataType: "json",
+                    success: function (response) {
+                        //console.log(response)
+                        preguntas = response.filter(e => {
+                            return e.categoria == categoria
+                        })
+                        //console.log(preguntas)
+                        for (i = 0; i < limite; i++) {
+                            let r = Math.floor(Math.random() * preguntas.length)
+                            $('#test').html($('#test').html() + `<p>${preguntas[r].pregunta}</p>`)
+                            preguntas[r].respuestas.forEach(respuesta => {
+                                $('#test').html($('#test').html() + `<input type='radio' name='${preguntas[r].idpregunta}' value='${respuesta.idrespuesta}'><span id='${respuesta.idrespuesta}'>${respuesta.respuesta}</span><br>`)
+                            })
+                        }
+                    }
+                });
+            },
+            /**
+             * Corrige el test si está generado y escribe el resultado en el elemento con id: 'correccion'.
+             */
+            corregirTest: () => {
+                $('*').removeClass('red')
+                $('*').removeClass('green')
+                let correctas = 0, incorrectas = 0, nota = 0
+                $('[type=radio]:checked').each((number, elem) => {
+                    preguntas.forEach(e => {
+                        if (e.idpregunta == elem.name) {
+                            console.log('OK')
+                            if (e.correcta == elem.value) {
+                                $(`#${e.correcta}`).addClass('green')
+                                correctas += 1
+                            }
+                            else {
+                                $(`#${e.correcta}`).addClass('green')
+                                $(`#${elem.value}`).addClass('red')
+                                incorrectas += 1
+                            }
+                        }
+                    })
+                })
+                nota = (correctas - incorrectas) * 10 / n
+                $('#correccion').html(`Aciertos: ${correctas} Fallos: ${incorrectas} Nota: ${nota}`)
+                $('[type=radio]').attr('disabled', true)
+                $('#corregir').attr('disabled', true)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Generador de exámenes tipo test</h1>
+    Categoría:
+    <select id="categoria" name="categoria">
+        <option value="2">JavaScript</option>
+        <option value="2">jQuery</option>
+        <option value="2">AngularJS</option>
+        <option value="4">PHP</option>
+        <option value="2">SQL</option>
+    </select>
+    Cantidad de preguntas:
+    <input type="number" name="cantidad" id="cantidad" value="10">
+    <button id="gen">Generar test</button>
+    <span id="contador"></span>
+    <hr>
+    <div id="test"></div><br>
+    <button id="corregir">Corregir</button><br><br>
+    <hr>
+    <div id="correccion"></div>
+</body>
+
+</html>

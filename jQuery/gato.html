@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gato</title>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('#form').submit((evento) => {
+                evento.preventDefault();
+                $.ajax({
+                    url: 'gatos_insert.php',
+                    method: 'post',
+                    dataType: 'json',
+                    success: (result) => {
+                        $('#salida').html(result.success);
+                        console.log(result);
+
+                    },
+                    data: $('#form').serialize()
+                })
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <form id="form" action="#" method="post">
+        <input type="nombre" name='nombre' id="nombre">
+        <input type="date" name="fecha_nacimiento" id="fnac">
+        <button id="submit">Enviar</button>
+    </form>
+    <div id="salida"></div>
+</body>
+
+</html>
