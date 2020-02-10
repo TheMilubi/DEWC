@@ -1,0 +1,5 @@
+<h2>Lista de gatos</h2>
+<ul>
+    <li *ngFor='let g of gatos'>{{g.nombre | uppercase}} nació el {{g.fNacimiento | date:'dd/MM/yyyy'}}
+    </li>
+</ul>

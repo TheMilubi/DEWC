@@ -7,5 +7,4 @@ export class Gato {
         this.raza = raza;
         this.edad = edad || -1;
     }
-
 }
