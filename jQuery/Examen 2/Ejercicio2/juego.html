@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Juego de Preguntas</title>
+    <style>
+        * {
+            outline: none;
+            text-align: center;
+        }
+
+        body {
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+            background-color: rgb(240, 240, 240);
+        }
+
+        div+div {
+            margin-top: 1rem;
+        }
+
+        #tema {
+            font-size: 2rem;
+            color: darkblue;
+            font-weight: bold;
+        }
+
+        button[name] {
+            margin-bottom: 1rem;
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: blue;
+            color: white;
+            border: .2rem darkblue solid;
+        }
+        button[name]:hover{
+            background-color: aquaMarine;
+            color: black
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+    </style>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+
+        $(document).ready(() => {
+            var juego = null
+            $('#juego').hide()
+            $('#empezar').click(() => {
+                $('#puntuacion').html('')
+                juego = new Juego()
+                if (juego.usuario != '') {
+                    juego.saluda()
+                    $('#inicio').hide()
+                    $('#juego').show()
+                    $('#preg').attr({ disabled: false })
+                    $('#planta').attr({ disabled: false })
+                }
+            })
+            $('#preg').click(() => {
+                juego.seleccionaRandom()
+                juego.mostrarPregunta()
+            })
+            $('#planta').click(() => {
+                juego.fin()
+            })
+
+        })
+        class Juego {
+            preguntas = []
+            actual = {}
+            puntos = 0
+            contador = 0
+            usuario = ''
+            /**
+             * Contruye un juego de preguntas apartir de un archivo json.
+             * @param {String} src Path al archivo json.
+             * @param {String} usuario Nombre del usuario.
+             */
+            constructor(src = 'preguntas.json', usuario = $('#usuario').val()) {
+                $.ajax({
+                    type: 'get',
+                    url: 'preguntas.json',
+                    dataType: 'json',
+                    success: (response) => {
+                        this.preguntas = response
+                    }
+                })
+                this.usuario = usuario
+            }
+            /**
+             * Selecciona una pregunta aleatoria y la elemina del array de preguntas.
+             */
+            seleccionaRandom() {
+                let r = Math.floor(Math.random() * this.preguntas.length)
+                this.actual = this.preguntas[r]
+                this.preguntas.splice(r, 1);
+            }
+            /**
+             * Muestra la pregunta en los elementos con ids 'pregunta', 'tema' y 'respuestas'.
+             */
+            mostrarPregunta() {
+                $('#bienvenida').html('')
+                $('#pregunta').html(this.actual.pregunta)
+                $('#tema').html(this.actual.tema)
+                $('#respuestas').html('')
+                $('#preg').attr('disabled', true)
+                $('#planta').attr('disabled', true)
+                //console.log(this.actual.respuestas)       //Descomentar para hacer trampa.
+                this.actual.respuestas.forEach((respuesta, index) => {
+                    $('#respuestas').html($('#respuestas').html() + `<button name='${index}'>${respuesta.respuesta}</button>`)
+                })
+                $('#respuestas' + ' button').click((e) => {
+                    let n = $(e.currentTarget).attr('name')
+                    $('#respuestas button').attr('disabled', true)
+                    let c = this.corregirRespuesta(Number(n))
+                    if (c) $(e.currentTarget).css({
+                        'background-color': 'green',
+                        'border': 'darkGreen solid .2rem'
+                    })
+                })
+
+            }
+            /**
+             * Borra la pregunta que se muestra.
+             */
+            borrarPregunta() {
+                $('#pregunta').html('')
+                $('#tema').html('')
+                $('#respuestas').html('')
+            }
+            /**
+             * Corrige la respuesta.
+             * @param {Number} indiceR Respuesta a corregir.
+             */
+            corregirRespuesta(indiceR) {
+                let correcta = false
+                if (this.actual.respuestas[indiceR].correcta == 's') {
+                    correcta = true
+                    this.puntos += 2 ** this.contador
+                    this.contador++
+                    if (this.preguntas.length > 0) {
+                        $('#preg').attr('disabled', false)
+                        $('#planta').attr('disabled', false)
+                    }
+                    else {
+                        this.fin()
+                    }
+                }
+                else {
+                    this.fin()
+                }
+                return correcta
+            }
+            /**
+             * Anota la puntuación en un archivo txt.
+             */
+            anotarPuntuacion() {
+                $.ajax({
+                    type: 'post',
+                    url: 'graba.php',
+                    data: {
+                        usuario: this.usuario,
+                        puntos: this.puntos
+                    }
+                })
+            }
+            /**
+             * Finaliza el juego.
+             */
+            fin(p = '#puntuacion') {
+                $(p).html(`Puntuación final: ${this.puntos}`)
+                this.borrarPregunta()
+                $('#juego').hide()
+                $('#inicio').show()
+                this.anotarPuntuacion()
+            }
+            /**
+             * Muestra un saludo con el nombre del jugador.
+             */
+            saluda() {
+                $('#bienvenida').html(`Bienvenid@ al juego, ${this.usuario}`)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="puntuacion"></div>
+    <div id="inicio">
+        <input type="text" name="usuario" id="usuario">
+        <button id="empezar">Empezar a jugar</button>
+    </div>
+    <div id="juego">
+        <div id="bienvenida"></div>
+        <div id="tema"></div>
+        <div id="pregunta"></div>
+        <div id="respuestas"></div>
+        <button id="preg">PREGUNTA</button>
+        <button id="planta">PLANTARSE</button>
+    </div>
+
+</body>
+
+</html>

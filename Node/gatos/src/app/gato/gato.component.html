@@ -1,0 +1,39 @@
+<h2>Componente gato</h2>
+<div *ngIf='visible' [style.color]="'red'">
+    Mi gato se llama {{gato.nombre}} y tiene {{gato.edad}} años
+</div>
+<button (click)="cambiaVisibilidad()">Cambiar visibilidad</button>
+<hr>
+<h3>Listado de gatos</h3>
+<table>
+    <tr>
+        <th>No</th>
+        <th>Nombre</th>
+        <th>Raza</th>
+        <th>Edad</th>
+    </tr>
+    <tr *ngFor="let gatito of arrayGatos; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{gatito.nombre}}</td>
+        <td>{{gatito.raza}}</td>
+        <td *ngIf="gatito.edad != -1">{{gatito.edad}}</td>
+        <td *ngIf="gatito.edad == -1"></td>
+        <td><button (click)="delGato(i)">Eliminar</button></td>
+
+    </tr>
+</table>
+<h3>Nuevo gato</h3>
+<form [formGroup]="gatoForm" (ngSubmit)="formSubmit()">
+    Nombre <input formControlName="nombre">
+    Raza <input formControlName="raza">
+    Edad <input formControlName="edad">
+    <div *ngIf="nombre.touched && nombre.hasError('required')" class="error">
+        El nombre es requerido
+    </div>
+    <div *ngIf="edad.touched && (edad.hasError('min') || edad.hasError('max'))" class="error">
+        La edad debe estar entre -1 y 25
+    </div>
+    <br>
+    <button type="submit" [disabled]="gatoForm.invalid">Añadir gato</button>
+
+</form>

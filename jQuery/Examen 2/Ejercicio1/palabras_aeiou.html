@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Palabras con todas las vocales</title>
-    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
     <script src="diccionario.js"></script>
     <style>
         #palabras {
@@ -25,7 +25,7 @@
              */
             mostrarPalabras: (id, diccionario) => {
                 diccionario = JSON.parse(diccionario).filter(palabra => {
-                    return /(?=.*[AÁaá])(?=.*[EÉeé])(?=.*[IÍií])(?=.*[OÓoó])(?=.*[UÚuú])/.test(palabra)
+                    return /(?=.*[AÁaá])(?=.*[EÉeé])(?=.*[IÍií])(?=.*[OÓoó])(?=.*[UÚuúü])/.test(palabra)
                 }).sort((a, b) => {
                     return a.toLowerCase().localeCompare(b.toLowerCase())
                 })

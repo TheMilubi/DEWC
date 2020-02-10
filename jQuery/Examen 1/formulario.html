@@ -31,11 +31,11 @@
 
 		function CargaMenu(respuesta) {
 			respuesta.sort();
-			respuesta.forEach(v => {
+			for (v of respuesta) {
 				$('#menu').html((n, html) => {
 					return html + `<option value='${v}'>${v}</option>`;
 				})
-			})
+			}
 			/*
 			if (this.readyState == 4 && this.status == 200) {
 				var salida = "";
