@@ -15,6 +15,11 @@ export class GatitoService {
   getGatos(): Observable<Gatito[]> { // Observable para poder suscribirse
     return of(this.gatos);
   }
+  
+  /* public get getGatos() : Gatito[] {
+    return this.gatos
+  } */
+  
 
   constructor() { }
 }
