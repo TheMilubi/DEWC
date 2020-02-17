@@ -6,4 +6,5 @@ export class Gatito {
     color: string;
     fNacimiento: string;
     fDefuncion: any;
+    
 }

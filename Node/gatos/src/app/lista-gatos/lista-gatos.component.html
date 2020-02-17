@@ -1,5 +1,12 @@
-<h2>Lista de gatos</h2>
-<ul>
+
+<!-- <ul>
     <li *ngFor='let g of gatos'>{{g.nombre | uppercase}} nació el {{g.fNacimiento | date:'dd/MM/yyyy'}}
+        <span>{{ edad(g.fNacimiento, g.fDefuncion) }}</span>
+    </li>
+</ul> -->
+<h2>Mis gatos</h2>
+<ul class="gatos">
+    <li *ngFor="let gato of gatos">
+        <span class="badge">{{gato.id | number: '2.0-0'}}</span> {{gato.nombre}}
     </li>
 </ul>
