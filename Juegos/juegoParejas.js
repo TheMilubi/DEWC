@@ -99,22 +99,32 @@ class Juego {
      */
     comprobarFin() {
         if (this.parejasEncontradas == (this.cartas.length / 2)) {
+            $('#tablero').hide()
             $('#tablero').html('')
             $('#fin').html('¡¡¡FIN DEL JUEGO!!!')
+            $('#fin').show()
+            $('#menu').show()
         }
     }
 }
 $(document).ready(() => {
-    var juego = new Juego()
-    juego.mostrar()
-    $('img[name]').each((indice, elem) => {
-        elem.onclick = () => {
-
-            if (elem.className == 'enabled') {
-                juego.click(indice)
-                elem.className = 'disabled'
-            }
+    $('#empezar').click(()=>{
+        if($('#numero').val() % 2 == 0 && $('#numero').val() > 0){
+            $('#fin').hide()
+            $('#menu').hide()
+            $('#tablero').show()
+            var juego = new Juego($('#numero').val())
+            juego.mostrar()
+            $('img[name]').each((indice, elem) => {
+                elem.onclick = () => {
+                    
+                    if (elem.className == 'enabled') {
+                        juego.click(indice)
+                        elem.className = 'disabled'
+                    }
+                }
+                
+            })
         }
-
     })
 })

@@ -24,17 +24,20 @@
         $(document).ready(function () {
 
             $('#gen').click(() => {
-                Test.generarTest($('#categoria').val(), $('#cantidad').val())
-                n = $('#cantidad').val()
-                if (intervalo) clearInterval(intervalo)
-                var r = new Reloj
-                $('#contador').html(r.toString())
-                intervalo = setInterval(() => {
-                    r.suma()
+                if ($('#cantidad').val() > 0) {
+
+                    Test.generarTest($('#categoria').val(), $('#cantidad').val())
+                    n = $('#cantidad').val()
+                    if (intervalo) clearInterval(intervalo)
+                    var r = new Reloj
                     $('#contador').html(r.toString())
-                }, 1000)
-                $('[type=radio]').attr('disabled', false)
-                $('#corregir').attr('disabled', false)
+                    intervalo = setInterval(() => {
+                        r.suma()
+                        $('#contador').html(r.toString())
+                    }, 1000)
+                    $('[type=radio]').attr('disabled', false)
+                    $('#corregir').attr('disabled', false)
+                }
 
             })
 

@@ -6,12 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Parejas</title>
     <style>
-        body{
+        * {
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 2rem;
+            background-color: rgba(107, 0, 0, 0.7);
+            color: white;
+        }
+
+        body {
             background-image: url('star.jpg');
             background-size: 100px 100px;
         }
+
+        #menu,
+        #tablero,
+        #fin {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, .7);
+            color: white;
+        }
+
         #tablero {
-            display: flex;
+            display: none;
             flex-flow: row wrap;
         }
 
@@ -20,6 +40,7 @@
         }
 
         #fin {
+            display: none;
             font-size: 3rem;
         }
     </style>
@@ -30,7 +51,11 @@
 
 <body>
     <h1>Juego de Parejas</h1>
-    <div id="menu"></div>
+    <div id="menu">
+        <label for="numero">¿Cuántas barajas quieres? (debe ser un número par):</label>
+        <input type="number" name="numero" id="numero">
+        <button id="empezar">Empezar juego</button>
+    </div>
     <div id="tablero"></div>
     <div id="fin"></div>
 
