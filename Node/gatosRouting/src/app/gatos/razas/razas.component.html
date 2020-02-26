@@ -1,0 +1,16 @@
+<div *ngIf="razaElegida">
+    <h2>Gatos de la raza {{razaElegida}}</h2>
+    <ul>
+        <li *ngFor="let gato of gatos">
+            <a routerLink="/detalle/{{gato.id}}">{{gato.nombre}}</a>
+        </li>
+    </ul>
+</div>
+<div *ngIf="!razaElegida">
+    <h2>Gatos de todas las razas</h2>
+    <ul>
+        <li *ngFor="let gato of gatos">
+            <a routerLink="/detalle/{{gato.id}}">{{gato.nombre}}</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,10 @@
+<div>{{alumnos[0]}}</div>
+<table>
+    <tr *ngFor="let alumno of alumnos">
+        <td>{{ alumno.id }}</td>
+        <td>{{ alumno.nombre }}</td>
+        <td>{{ alumno.apellidos }}</td>
+        <td>{{ alumno.nota }}</td>
+        <!-- <td><button (click)=delete(alumno)>x</button></td> -->
+    </tr>
+</table>

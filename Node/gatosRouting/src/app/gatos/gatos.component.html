@@ -1,0 +1,11 @@
+<h2>Mis gatos</h2>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+    </tr>
+    <tr *ngFor="let gato of gatos">
+        <td>{{gato.id | number: '2.0-0'}}</td>
+        <td><a routerLink="/detalle/{{gato.id}}">{{gato.nombre}}</a></td>
+    </tr>
+</table>

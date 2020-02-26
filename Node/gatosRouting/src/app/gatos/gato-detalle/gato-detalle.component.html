@@ -1,0 +1,9 @@
+<div *ngIf="gato">
+    <h2>Detalles de {{gato.nombre | uppercase}}</h2>
+    <div>Raza: <a routerLink="/razas/{{gato.raza}}">{{gato.raza}}</a></div>
+    <div>Género: {{gato.genero}}</div>
+    <div>Color: {{gato.color}}</div>
+    <div *ngIf="gato.fDefuncion">*Fallecido*</div>
+    <div *ngIf="!gato.fDefuncion">Edad: {{edad(gato.fNacimiento)}}</div>
+</div>
+<button (click)="goBack()">Volver</button>
