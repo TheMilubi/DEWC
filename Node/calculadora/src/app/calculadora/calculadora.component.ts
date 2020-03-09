@@ -17,30 +17,39 @@ export class CalculadoraComponent implements OnInit {
   ngOnInit() {
     this.titulo = 'Calculadora'
     this.historial = []
+    this.num1 = 0
+    this.num2 = 0
+    this.resultado = 0
   }
-  sumar(){
-    this.historial.push(`${this.num1} + ${this.num2} = ${this.num1 + this.num2}`)
-    return this.num1 + this.num2
-  }
-  restar(){
-    this.historial.push(`${this.num1} - ${this.num2} = ${this.num1 - this.num2}`)
-    return this.num1 - this.num2
-  }
-  multiplicar(){
-    this.historial.push(`${this.num1} * ${this.num2} = ${this.num1 * this.num2}`)
-    return this.num1 * this.num2
-  }
-  dividir(){
-    this.historial.push(`${this.num1} / ${this.num2} = ${this.num1 / this.num2}`)
-    return this.num1 / this.num2
-  }
-  binario(){
-    this.historial.push(`${this.num1} / ${this.num2} = ${this.num1 / this.num2}`)
-    return this.num1 / this.num2
-    
-  }
-  limpiar(){
 
+  sumar() {
+    this.historial.push(`${this.num1} + ${this.num2} = ${this.num1 + this.num2}`)
+    this.resultado =  this.num1 + this.num2
+  }
+
+  restar() {
+    this.historial.push(`${this.num1} - ${this.num2} = ${this.num1 - this.num2}`)
+    this.resultado =  this.num1 - this.num2
+  }
+
+  multiplicar() {
+    this.historial.push(`${this.num1} x ${this.num2} = ${this.num1 * this.num2}`)
+    this.resultado = this.num1 * this.num2
+  }
+
+  dividir() {
+    this.historial.push(`${this.num1} / ${this.num2} = ${this.num1 / this.num2}`)
+    this.resultado = this.num1 / this.num2
+  }
+
+  binario() {
+    this.historial.push(`${this.num1} en binario resulta ${this.num1.toString(2)}`)
+    this.resultado = Number(this.num1.toString(2));
+
+  }
+
+  limpiar() {
+    this.historial = []
   }
 
 }

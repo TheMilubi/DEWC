@@ -1,1 +1,79 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@mixin flex($width: 90%, $flow: row nowrap, $justify: center, $align: center, $justify-items: center, $align-items: center, $mb: 2rem) {
+    width: $width;
+    display: flex;
+    flex-flow: $flow;
+    justify-content: $justify;
+    align-content: $align;
+    align-items: $align-items;
+    justify-items: $justify-items;
+    margin-bottom: $mb;
+}
+
+@mixin boton($color: white, $bgc: blue, $bgc-hover: darkblue, $border: 1.5px solid darkblue, $p: .7rem 1rem) {
+    color: $color;
+    background-color: $bgc;
+    border: $border;
+    padding: $p;
+    font-weight: bold;
+    &:hover{
+        background-color: $bgc-hover;
+        cursor: pointer;
+    }
+    &:active{
+        transform: scale(0.9);
+    }
+}
+h1{
+    padding: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: darkblue;
+    color: white;
+    margin-bottom: 1rem;
+}
+app-calculadora{
+    padding: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    align-items: center;
+    #calculadora{
+        @include flex;
+        input, span{
+            width: calc(90%/7);
+        }
+        input{
+            margin-right: 5%;
+            padding: .5rem;
+        }
+        label{
+            margin-right: 1%;
+        }
+
+    }
+    #controles{
+        @include flex();
+        button{
+            @include boton;
+            margin-right: 1rem;
+            &:last-child{
+                margin: 0
+            }
+        }
+    }
+    #historial{
+        @include flex($flow: column nowrap, $align: left, $align-items: left);
+        h2{
+            margin-bottom: 1.5rem;
+        }
+        li{
+            margin-left: 3rem;
+        }
+    }
+}

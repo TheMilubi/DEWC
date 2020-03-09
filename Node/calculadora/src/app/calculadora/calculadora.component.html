@@ -1,1 +1,24 @@
-<p>calculadora works!</p>
+<div id="calculadora">
+    <label for="num1">1<sup>er</sup> número: </label>
+    <input type="number" [(ngModel)]="num1" tabindex="1" autofocus="true">
+    <label for="num2">2<sup>do</sup> número: </label>
+    <input type="number" [(ngModel)]="num2" tabindex="2">
+    <label for="resultado">Resultado: </label>
+    <span>{{resultado}}</span>
+</div>
+<div id="controles">
+    <button (click)="sumar()">Sumar</button>
+    <button (click)="restar()">Restar</button>
+    <button (click)="multiplicar()">Multiplicar</button>
+    <button (click)="dividir()">Dividir</button>
+    <button (click)="binario()">A binario</button>
+    <button (click)="limpiar()">Limpiar</button>
+</div>
+<div id="historial">
+    <h2>Historial de operaciones</h2>
+    <ul *ngFor="let h of historial">
+        <li>
+            {{h}}
+        </li>
+    </ul>
+</div>
